@@ -1,0 +1,73 @@
+version: "3.8"
+
+services:
+
+  configserver:
+    image: configserver:latest
+    mem_reservation: 700m
+    ports:
+      - "8060:8060"
+    networks:
+      - bank-network
+
+  accounts:
+    image: accounts:latest
+    mem_reservation: 700m
+    ports:
+      - "8070:8070"
+    networks:
+      - bank-network
+    depends_on:
+      - configserver
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    environment:
+      SPRING_PROFILES_ACTIVE: default
+      SPRING_CONFIG_IMPORT: configserver:http://configserver:8060/
+
+  loans:
+    image: loans:latest
+    mem_reservation: 700m
+    ports:
+      - "8090:8090"
+    networks:
+      - bank-network
+    depends_on:
+      - configserver
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    environment:
+      SPRING_PROFILES_ACTIVE: default
+      SPRING_CONFIG_IMPORT: configserver:http://configserver:8060/
+
+  cards:
+    image: cards:latest
+    mem_reservation: 700m
+    ports:
+      - "9000:9000"
+    networks:
+      - bank-network
+    depends_on:
+      - configserver
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    environment:
+      SPRING_PROFILES_ACTIVE: default
+      SPRING_CONFIG_IMPORT: configserver:http://configserver:8060/
+
+networks:
+  bank-network:
+    name: bank-network
+

@@ -1,0 +1,28 @@
+server:
+    port: 8060
+spring:
+    application:
+        name: configserver
+    cloud:
+        config:
+            server:
+                native:
+                    #search-locations: classpath:/config
+                    search-locations: file:///C://projects//bank//configserver//src//main//resources//config
+                git:
+                    uri: git@github.com:TianshuWang/bank-config.git
+                    ignore-local-ssh-settings: true
+                    clone-on-start: true
+                    default-label: master
+                    passphrase:
+                    privateKey: |
+                        -----BEGIN EC PRIVATE KEY-----
+                        MIHcAgEBBEIBG780OLDGYz3jK9XQ9lg7Cp4OFkz67M0+SK+KWSRCiJT0vWgdPz8m
+                        6oGzGVElArFzLyrY6YHD0PReZOapPv5836mgBwYFK4EEACOhgYkDgYYABAHe4A9b
+                        KsRjkqAvQAcFvnmAzWr6Pk/aTesoLgBysc2g7acTtlNCpe63aO2HyNBHOdRDl+ND
+                        WFeay9fJjVrcr0DfTgEe4ZIFrPTalRlqUyzTK2EV4ivHyS1Mwcl0ZVQxx8H6R/d0
+                        3Jg6b8SKe1ifV8x9Ybb1Bh/AfCeXNMIK+65l9JjSTQ==
+                        -----END EC PRIVATE KEY-----
+    profiles:
+        #active: native
+        active: git
