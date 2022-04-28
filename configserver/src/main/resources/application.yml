@@ -3,6 +3,9 @@ server:
 spring:
     application:
         name: configserver
+    profiles:
+        #active: native
+        active: git
     cloud:
         config:
             server:
@@ -23,6 +26,3 @@ spring:
                         WFeay9fJjVrcr0DfTgEe4ZIFrPTalRlqUyzTK2EV4ivHyS1Mwcl0ZVQxx8H6R/d0
                         3Jg6b8SKe1ifV8x9Ybb1Bh/AfCeXNMIK+65l9JjSTQ==
                         -----END EC PRIVATE KEY-----
-    profiles:
-        #active: native
-        active: git
