@@ -16,6 +16,16 @@ spring:
     h2:
         console:
             enabled: true
+    rabbitmq:
+        host: localhost
+        password: guest
+        port: 5672
+        username: guest
+        exchange: customer.exchange
+        queue: customer.queue
+        routingKey: customer.routingKey
+    main:
+        allow-bean-definition-overriding: true
 server:
     port: 8070
 

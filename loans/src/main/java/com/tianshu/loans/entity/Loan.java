@@ -6,6 +6,7 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Date;
 
 @Entity(name = "LOANS")
 @Getter
@@ -36,5 +37,5 @@ public class Loan {
     private Double outstandingAmount;
 
     @Column(name = "CREATE_DATE", nullable = false)
-    private LocalDate createDate;
+    private Date createDate;
 }

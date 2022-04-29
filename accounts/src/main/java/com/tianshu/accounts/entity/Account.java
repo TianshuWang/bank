@@ -6,6 +6,7 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Date;
 
 @Entity(name = "ACCOUNTS")
 @Getter
@@ -28,6 +29,6 @@ public class Account {
     private String branchAddress;
 
     @Column(name = "CREATE_DATE", nullable = false)
-    private LocalDate createDate;
+    private Date createDate;
 
 }

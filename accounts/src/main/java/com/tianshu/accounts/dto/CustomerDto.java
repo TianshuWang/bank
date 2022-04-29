@@ -1,19 +1,27 @@
 package com.tianshu.accounts.dto;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import lombok.*;
 
 import java.time.LocalDate;
+import java.util.Date;
 
-@Getter
-@Setter
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @ToString
 public class CustomerDto {
 
     private Long id;
+
     private String name;
+
     private String email;
+
     private String mobileNumber;
-    private LocalDate createDate;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH-mm-ss")
+    private Date createDate;
 }

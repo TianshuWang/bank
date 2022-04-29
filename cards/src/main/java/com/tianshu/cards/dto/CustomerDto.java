@@ -1,10 +1,11 @@
 package com.tianshu.cards.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -15,5 +16,6 @@ public class CustomerDto {
     private String name;
     private String email;
     private String mobileNumber;
-    private LocalDate createDate;
+    @JsonFormat(pattern = "yyyy-MM-dd HH-mm-ss")
+    private Date createDate;
 }

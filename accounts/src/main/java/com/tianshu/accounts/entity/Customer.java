@@ -7,6 +7,7 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Date;
 
 @Entity(name = "CUSTOMERS")
 @Getter
@@ -29,5 +30,5 @@ public class Customer {
     private String mobileNumber;
 
     @Column(name = "CREATE_DATE")
-    private LocalDate createDate;
+    private Date createDate;
 }

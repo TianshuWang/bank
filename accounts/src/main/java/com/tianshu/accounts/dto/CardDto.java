@@ -1,10 +1,12 @@
 package com.tianshu.accounts.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -18,5 +20,6 @@ public class CardDto {
     private Double totalLimit;
     private Double amountUsed;
     private Double availableAmount;
-    private LocalDate createDate;
+    @JsonFormat(pattern = "yyyy-MM-dd HH-mm-ss")
+    private Date createDate;
 }

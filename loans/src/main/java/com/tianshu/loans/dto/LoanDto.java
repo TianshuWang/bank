@@ -1,10 +1,12 @@
 package com.tianshu.loans.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -18,5 +20,6 @@ public class LoanDto {
     private Double total;
     private Double amountPaid;
     private Double outstandingAmount;
-    private LocalDate createDate;
+    @JsonFormat(pattern = "yyyy-MM-dd HH-mm-ss")
+    private Date createDate;
 }
