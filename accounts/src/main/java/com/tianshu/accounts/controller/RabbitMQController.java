@@ -3,14 +3,15 @@ package com.tianshu.accounts.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tianshu.accounts.service.CustomerService;
 import com.tianshu.accounts.service.RabbitMQService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("rabbitmq")
+@Api(tags = "Accounts RabbitMQ Controller")
 public class RabbitMQController {
 
     @Autowired
@@ -20,6 +21,8 @@ public class RabbitMQController {
     private CustomerService customerService;
 
     @GetMapping(value = "customers/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation("Produce Customer's details")
     public String produceCustomerById(@PathVariable Long id) {
         rabbitMQService.send(customerService.getCustomerById(id));
         return "Message sent to the RabbitMQ Successfully";

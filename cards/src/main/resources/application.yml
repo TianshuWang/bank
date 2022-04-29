@@ -18,9 +18,9 @@ spring:
       enabled: true
   rabbitmq:
     host: localhost
-    password: guest
+    password: root
     port: 5672
-    username: guest
+    username: root
     exchange: customer.exchange
     queue: customer.queue
     routingKey: customer.routingKey

@@ -1,6 +1,19 @@
 version: "3.8"
 
 services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    mem_reservation: 700m
+    restart: always
+    hostname: host.docker.internal
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - bank-network
+    environment:
+      RABBITMQ_USER: root
+      RABBIT_PASSWORD: root
 
   configserver:
     image: configserver:latest
@@ -39,6 +52,7 @@ services:
     depends_on:
       - configserver
       - eurekaserver
+      - rabbitmq
     deploy:
       restart_policy:
         condition: on-failure
@@ -49,6 +63,30 @@ services:
       SPRING_PROFILES_ACTIVE: default
       SPRING_CONFIG_IMPORT: configserver:http://configserver:8060/
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8010/eureka/
+      SPRING_RABBITMQ_HOST: host.docker.internal
+
+  accounts1:
+    image: accounts:latest
+    mem_reservation: 700m
+    ports:
+      - "8071:8070"
+    networks:
+      - bank-network
+    depends_on:
+      - configserver
+      - eurekaserver
+      - rabbitmq
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    environment:
+      SPRING_PROFILES_ACTIVE: default
+      SPRING_CONFIG_IMPORT: configserver:http://configserver:8060/
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8010/eureka/
+      SPRING_RABBITMQ_HOST: host.docker.internal
 
   loans:
     image: loans:latest
@@ -60,6 +98,7 @@ services:
     depends_on:
       - configserver
       - eurekaserver
+      - rabbitmq
     deploy:
       restart_policy:
         condition: on-failure
@@ -70,6 +109,7 @@ services:
       SPRING_PROFILES_ACTIVE: default
       SPRING_CONFIG_IMPORT: configserver:http://configserver:8060/
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8010/eureka/
+      SPRING_RABBITMQ_HOST: host.docker.internal
 
   cards:
     image: cards:latest
@@ -81,6 +121,7 @@ services:
     depends_on:
       - configserver
       - eurekaserver
+      - rabbitmq
     deploy:
       restart_policy:
         condition: on-failure
@@ -91,6 +132,7 @@ services:
       SPRING_PROFILES_ACTIVE: default
       SPRING_CONFIG_IMPORT: configserver:http://configserver:8060/
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8010/eureka/
+      SPRING_RABBITMQ_HOST: host.docker.internal
 
 networks:
   bank-network:
