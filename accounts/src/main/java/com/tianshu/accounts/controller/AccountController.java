@@ -10,6 +10,8 @@ import com.tianshu.accounts.entity.Properties;
 import com.tianshu.accounts.service.AccountService;
 import com.tianshu.accounts.service.CardsFeignClient;
 import com.tianshu.accounts.service.LoansFeignClient;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;

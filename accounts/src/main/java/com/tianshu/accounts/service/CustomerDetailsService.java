@@ -35,4 +35,14 @@ public class CustomerDetailsService {
                 .cards(cardDtos)
                 .build();
     }
+
+    public CustomerDetailsDto getCustomerDetailsByCustomerFallBack(CustomerDto customerDto){
+        List<AccountDto> accountDtos = accountService.getAccountsByCustomerId(customerDto.getId());
+        List<CardDto> cardDtos = cardsFeignClient.getCardDetails(customerDto);
+
+        return CustomerDetailsDto.builder()
+                .accounts(accountDtos)
+                .cards(cardDtos)
+                .build();
+    }
 }

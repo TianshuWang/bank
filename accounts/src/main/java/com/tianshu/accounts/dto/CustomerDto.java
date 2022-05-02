@@ -22,6 +22,6 @@ public class CustomerDto {
 
     private String mobileNumber;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH-mm-ss")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date createDate;
 }

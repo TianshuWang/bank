@@ -50,3 +50,32 @@ info:
         name: Accounts Microservice
         description: Bank Accounts Application
         version: 1.0.0
+
+resilience4j:
+    circuitbreaker:
+        configs:
+            default:
+                registerHealthIndicator: true
+        instances:
+            circuitbreakerForCustomerDetails:
+                minimumNumberOfCalls: 5 #断路器计算失败率或慢调⽤率之前所需的最⼩调⽤数.例如，如果minimumNumberOfCalls为10，则必须⾄少记录10个调⽤，然后才能计算失败率
+                failureRateThreshold: 50 #以百分⽐配置失败率阈值。当失败率等于或⼤于阈值时，断路器状态并关闭变为开启，并进⾏服务降级
+                waitDurationInOpenState: 30000 #断路器从开启过渡到半开应等待的时间
+                permittedNumberOfCallsInHalfOpenState: 2 #断路器在半开状态下允许通过的调⽤次数
+    retry:
+        configs:
+            default:
+                registerHealthIndicator: true
+        instances:
+            retryForCustomerDetails:
+                maxRetryAttempts: 3
+                waitDuration: 2000
+    ratelimiter:
+        configs:
+            default:
+                registerHealthIndicator: true
+        instances:
+            rateLimiterForHello:
+                timeoutDuration: 5 #线程等待权限的默认等待时间
+                limitRefreshPeriod: 5000 #限流器每隔0.5秒刷新一次
+                limitForPeriod: 1 #在一个刷新周期内，允许最大请求书
