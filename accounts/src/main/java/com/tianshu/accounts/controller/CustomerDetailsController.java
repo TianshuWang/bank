@@ -22,8 +22,8 @@ public class CustomerDetailsController {
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation("Customer's details")
-    //@CircuitBreaker(name = "circuitbreakerForCustomerDetails", fallbackMethod = "getCustomerDetailsFallBack")
-    @Retry(name = "retryForCustomerDetails", fallbackMethod = "getCustomerDetailsFallBack")
+    @CircuitBreaker(name = "circuitbreakerForCustomerDetails", fallbackMethod = "getCustomerDetailsFallBack")
+    //@Retry(name = "retryForCustomerDetails", fallbackMethod = "getCustomerDetailsFallBack")
     public CustomerDetailsDto getCustomerDetails(@RequestBody CustomerDto customerDto){
         return customerDetailsService.getCustomerDetailsByCustomer(customerDto);
     }
