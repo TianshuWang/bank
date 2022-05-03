@@ -12,14 +12,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-@RestController("customer-details")
+@RestController
 @Api(tags = "Customer's Details Controller")
 public class CustomerDetailsController {
 
     @Autowired
     private CustomerDetailsService customerDetailsService;
 
-    @PostMapping
+    @PostMapping("customer-details")
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation("Customer's details")
     @CircuitBreaker(name = "circuitbreakerForCustomerDetails", fallbackMethod = "getCustomerDetailsFallBack")

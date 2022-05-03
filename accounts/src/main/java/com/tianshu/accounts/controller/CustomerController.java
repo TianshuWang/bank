@@ -19,7 +19,7 @@ public class CustomerController {
     @Autowired
     private CustomerService customerService;
 
-    @GetMapping
+    @GetMapping("all")
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation("Customers's details")
     public List<CustomerDto> getAllCustomers(){

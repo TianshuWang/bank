@@ -14,7 +14,6 @@ import javax.persistence.EntityNotFoundException;
 import java.util.Date;
 
 @ControllerAdvice
-@RequestMapping("cards")
 public class CardsServiceExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(Exception.class)

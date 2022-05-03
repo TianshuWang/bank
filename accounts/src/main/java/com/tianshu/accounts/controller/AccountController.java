@@ -19,7 +19,6 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("accounts")
 @Api(tags = "Accounts Controller")
 public class AccountController {
 
@@ -29,14 +28,14 @@ public class AccountController {
     @Autowired
     private AccountServiceConfig accountConfig;
 
-    @GetMapping("customer/{id}")
+    @GetMapping("accounts/customer/{id}")
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation("Customer's accounts details")
     public List<AccountDto> getAccountsByCustomerId(@ApiParam("Customer Id") @PathVariable Long id){
         return accountService.getAccountsByCustomerId(id);
     }
 
-    @GetMapping("{id}")
+    @GetMapping("accounts/{id}")
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation("Account's details")
     public AccountDto getAccountsById(@ApiParam("Account Id") @PathVariable Long id){

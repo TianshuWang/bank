@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("cards")
 @Api(tags = "Cards Controller")
 public class CardController {
 
@@ -27,7 +26,7 @@ public class CardController {
     @Autowired
     private CardServiceConfig cardConfig;
 
-    @PostMapping("customer")
+    @PostMapping("cards/customer")
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation("Customer's cards details")
     public List<CardDto> getLoansByCustomerId(@ApiParam("Customer") @RequestBody CustomerDto dto){
