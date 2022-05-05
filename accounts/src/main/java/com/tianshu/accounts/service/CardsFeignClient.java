@@ -6,6 +6,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 import java.util.List;
 
@@ -13,5 +14,5 @@ import java.util.List;
 public interface CardsFeignClient {
 
     @PostMapping("cards/customer")
-    List<CardDto> getCardDetails(@RequestBody CustomerDto customerDto);
+    List<CardDto> getCardDetails(@RequestHeader("bank-correlation-id") String correlationId, @RequestBody CustomerDto customerDto);
 }

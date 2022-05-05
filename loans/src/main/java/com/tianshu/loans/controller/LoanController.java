@@ -30,13 +30,13 @@ public class LoanController {
     @PostMapping("loans/customer")
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation("Customer's loans details")
-    public List<LoanDto> getLoansByCustomerId(@ApiParam("Customer") @RequestBody CustomerDto dto){
+    public List<LoanDto> getLoansByCustomerId(@ApiParam("Customer") @RequestHeader("bank-correlation-id") String correlationId, @RequestBody CustomerDto dto){
         return loanService.getLoansByCustomerId(dto.getId());
     }
 
     @GetMapping("properties")
     @ResponseStatus(HttpStatus.OK)
-    @ApiOperation("Loans's properties")
+    @ApiOperation("Loans properties")
     public String getPropertyDetails() throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         Properties properties = new Properties(loanConfig.getMsg(),loanConfig.getBuildVersion()

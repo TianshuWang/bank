@@ -29,7 +29,7 @@ public class CardController {
     @PostMapping("cards/customer")
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation("Customer's cards details")
-    public List<CardDto> getLoansByCustomerId(@ApiParam("Customer") @RequestBody CustomerDto dto){
+    public List<CardDto> getCardsByCustomerId(@ApiParam("Customer") @RequestHeader("bank-correlation-id") String correlationId, @RequestBody CustomerDto dto){
         return cardService.getCardsByCustomerId(dto.getId());
     }
 

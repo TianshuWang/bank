@@ -19,10 +19,10 @@ public class CustomerDetailsService {
     @Autowired
     private CardsFeignClient cardsFeignClient;
 
-    public CustomerDetailsDto getCustomerDetailsByCustomer(CustomerDto customerDto){
+    public CustomerDetailsDto getCustomerDetailsByCustomer(String correlationId, CustomerDto customerDto){
         List<AccountDto> accountDtos = accountService.getAccountsByCustomerId(customerDto.getId());
-        List<LoanDto> loanDtos = loansFeignClient.getLoanDetails(customerDto);
-        List<CardDto> cardDtos = cardsFeignClient.getCardDetails(customerDto);
+        List<LoanDto> loanDtos = loansFeignClient.getLoanDetails(correlationId,customerDto);
+        List<CardDto> cardDtos = cardsFeignClient.getCardDetails(correlationId,customerDto);
 
         return CustomerDetailsDto.builder()
                 .accounts(accountDtos)
@@ -31,9 +31,9 @@ public class CustomerDetailsService {
                 .build();
     }
 
-    public CustomerDetailsDto getCustomerDetailsByCustomerFallBack(CustomerDto customerDto){
+    public CustomerDetailsDto getCustomerDetailsByCustomerFallBack(String correlationId, CustomerDto customerDto){
         List<AccountDto> accountDtos = accountService.getAccountsByCustomerId(customerDto.getId());
-        List<CardDto> cardDtos = cardsFeignClient.getCardDetails(customerDto);
+        List<CardDto> cardDtos = cardsFeignClient.getCardDetails(correlationId,customerDto);
 
         return CustomerDetailsDto.builder()
                 .accounts(accountDtos)

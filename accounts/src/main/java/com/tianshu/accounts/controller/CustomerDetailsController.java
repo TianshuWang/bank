@@ -23,13 +23,13 @@ public class CustomerDetailsController {
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation("Customer's details")
     @CircuitBreaker(name = "circuitbreakerForCustomerDetails", fallbackMethod = "getCustomerDetailsFallBack")
-    //@Retry(name = "retryForCustomerDetails", fallbackMethod = "getCustomerDetailsFallBack")
-    public CustomerDetailsDto getCustomerDetails(@RequestBody CustomerDto customerDto){
-        return customerDetailsService.getCustomerDetailsByCustomer(customerDto);
+    @Retry(name = "retryForCustomerDetails", fallbackMethod = "getCustomerDetailsFallBack")
+    public CustomerDetailsDto getCustomerDetails(@RequestHeader("bank-correlation-id") String correlationId, @RequestBody CustomerDto customerDto){
+        return customerDetailsService.getCustomerDetailsByCustomer(correlationId, customerDto);
     }
 
-    private CustomerDetailsDto getCustomerDetailsFallBack(CustomerDto customerDto, Throwable t){
-        return customerDetailsService.getCustomerDetailsByCustomerFallBack(customerDto);
+    private CustomerDetailsDto getCustomerDetailsFallBack(String correlationId, CustomerDto customerDto, Throwable t){
+        return customerDetailsService.getCustomerDetailsByCustomerFallBack(correlationId,customerDto);
     }
 
     @GetMapping("hello")
