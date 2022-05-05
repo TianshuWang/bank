@@ -21,7 +21,10 @@ spring:
         password: root
         port: 5672
         username: root
-        exchange: customer.exchange
+        exchange-direct: customer.exchange.direct
+        exchange-fanout: customer.exchange.fanout
+        queue-loans: customer.queue.loans
+        queue-cards: customer.queue.cards
         queue: customer.queue
         routingKey: customer.routingKey
     main:

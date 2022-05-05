@@ -18,10 +18,13 @@ spring:
             enabled: true
     rabbitmq:
         host: localhost
-        password: guest
+        password: root
         port: 5672
-        username: guest
-        exchange: customer.exchange
+        username: root
+        exchange-direct: customer.exchange.direct
+        exchange-fanout: customer.exchange.fanout
+        queue-loans: customer.queue.loans
+        queue-cards: customer.queue.cards
         queue: customer.queue
         routingKey: customer.routingKey
     main:

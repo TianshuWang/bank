@@ -134,6 +134,30 @@ services:
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8010/eureka/
       SPRING_RABBITMQ_HOST: host.docker.internal
 
+  gatewayserver:
+    image: gatewayserver:latest
+    mem_reservation: 700m
+    ports:
+      - "9010:9010"
+    networks:
+      - bank-network
+    depends_on:
+      - configserver
+      - eurekaserver
+      - cards
+      - loans
+      - accounts
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    environment:
+      SPRING_PROFILES_ACTIVE: default
+      SPRING_CONFIG_IMPORT: configserver:http://configserver:8060/
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8010/eureka/
+
 networks:
   bank-network:
     name: bank-network
