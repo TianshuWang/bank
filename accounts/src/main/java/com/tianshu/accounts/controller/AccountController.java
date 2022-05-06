@@ -6,6 +6,7 @@ import com.tianshu.accounts.config.AccountServiceConfig;
 import com.tianshu.accounts.dto.AccountDto;
 import com.tianshu.accounts.entity.Properties;
 import com.tianshu.accounts.service.AccountService;
+import io.micrometer.core.annotation.Timed;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -27,15 +28,16 @@ public class AccountController {
     @GetMapping("accounts/customer/{id}")
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation("Customer's accounts details")
-    public List<AccountDto> getAccountsByCustomerId(@ApiParam("Customer Id") @PathVariable Long id){
-        return accountService.getAccountsByCustomerId(id);
+    @Timed(value = "getCustomerAccountsDetails.time", description = "Time taken to return Customer's Accounts details")
+    public List<AccountDto> getAccountsDetailsByCustomerId(@ApiParam("Customer Id") @PathVariable Long id){
+        return accountService.getAccountsDetailsByCustomerId(id);
     }
 
     @GetMapping("accounts/{id}")
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation("Account's details")
-    public AccountDto getAccountsById(@ApiParam("Account Id") @PathVariable Long id){
-        return accountService.getAccountById(id);
+    public AccountDto getAccountsDetailsById(@ApiParam("Account Id") @PathVariable Long id){
+        return accountService.getAccountDetailsById(id);
     }
 
     @GetMapping("accounts/properties")

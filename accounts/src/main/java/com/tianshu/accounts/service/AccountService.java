@@ -26,7 +26,7 @@ public class AccountService {
     @Autowired
     private AccountServiceConfig accountConfig;
 
-    public List<AccountDto> getAccountsByCustomerId(Long customerId){
+    public List<AccountDto> getAccountsDetailsByCustomerId(Long customerId){
         List<Account> accounts = accountRepository.findByCustomerId(customerId);
 
         if(CollectionUtils.isEmpty(accounts)){
@@ -39,7 +39,7 @@ public class AccountService {
         return accountsDto;
     }
 
-    public AccountDto getAccountById(Long id){
+    public AccountDto getAccountDetailsById(Long id){
         Account account = accountRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Account not found by Id:" + id));
 
         return EntityDtoUtil.entityToDto(account, AccountDto.class);

@@ -27,7 +27,7 @@ public class CustomerDetailsService {
     public CustomerDetailsDto getCustomerDetailsByCustomer(String correlationId, CustomerDto customerDto){
         logger.info("Get Customer's Details Method Started");
 
-        List<AccountDto> accountDtos = accountService.getAccountsByCustomerId(customerDto.getId());
+        List<AccountDto> accountDtos = accountService.getAccountsDetailsByCustomerId(customerDto.getId());
         List<LoanDto> loanDtos = loansFeignClient.getLoanDetails(correlationId,customerDto);
         List<CardDto> cardDtos = cardsFeignClient.getCardDetails(correlationId,customerDto);
 
@@ -41,7 +41,7 @@ public class CustomerDetailsService {
     }
 
     public CustomerDetailsDto getCustomerDetailsByCustomerFallBack(String correlationId, CustomerDto customerDto){
-        List<AccountDto> accountDtos = accountService.getAccountsByCustomerId(customerDto.getId());
+        List<AccountDto> accountDtos = accountService.getAccountsDetailsByCustomerId(customerDto.getId());
         List<CardDto> cardDtos = cardsFeignClient.getCardDetails(correlationId,customerDto);
 
         return CustomerDetailsDto.builder()
