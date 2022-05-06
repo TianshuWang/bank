@@ -17,16 +17,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 
-
 @RestController
 @Api(tags = "Accounts Controller")
 public class AccountController {
 
     @Autowired
     private AccountService accountService;
-
-    @Autowired
-    private AccountServiceConfig accountConfig;
 
     @GetMapping("accounts/customer/{id}")
     @ResponseStatus(HttpStatus.OK)
@@ -42,14 +38,10 @@ public class AccountController {
         return accountService.getAccountById(id);
     }
 
-    @GetMapping("properties")
+    @GetMapping("accounts/properties")
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation("Account's properties")
     public String getPropertyDetails() throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        Properties properties = new Properties(accountConfig.getMsg(),accountConfig.getBuildVersion()
-                ,accountConfig.getMailDetails(),accountConfig.getActiveBranches());
-
-        return objectMapper.writeValueAsString(properties);
+        return accountService.getPropertyDetails();
     }
 }

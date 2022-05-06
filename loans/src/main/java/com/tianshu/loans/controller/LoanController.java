@@ -17,15 +17,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-
 @Api(tags = "Loans Controller")
 public class LoanController {
 
     @Autowired
     private LoanService loanService;
-
-    @Autowired
-    private LoanServiceConfig loanConfig;
 
     @PostMapping("loans/customer")
     @ResponseStatus(HttpStatus.OK)
@@ -34,14 +30,10 @@ public class LoanController {
         return loanService.getLoansByCustomerId(dto.getId());
     }
 
-    @GetMapping("properties")
+    @GetMapping("loans/properties")
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation("Loans properties")
     public String getPropertyDetails() throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        Properties properties = new Properties(loanConfig.getMsg(),loanConfig.getBuildVersion()
-                ,loanConfig.getMailDetails(),loanConfig.getActiveBranches());
-
-        return objectMapper.writeValueAsString(properties);
+        return loanService.getPropertyDetails();
     }
 }

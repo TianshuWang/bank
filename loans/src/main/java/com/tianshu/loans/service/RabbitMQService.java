@@ -23,6 +23,6 @@ public class RabbitMQService {
 
     @RabbitListener(queues = "${spring.rabbitmq.queue-loans}")
     public void listen(CustomerDto customerDto) {
-        logger.info("Loans service received message of customer's data: {}",customerDto.toString());
+        logger.info("Loans service received fanout message of customer's data: {}",customerDto.toString());
     }
 }

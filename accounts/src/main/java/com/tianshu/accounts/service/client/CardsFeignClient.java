@@ -1,4 +1,4 @@
-package com.tianshu.accounts.service;
+package com.tianshu.accounts.service.client;
 
 import com.tianshu.accounts.dto.CardDto;
 import com.tianshu.accounts.dto.CustomerDto;

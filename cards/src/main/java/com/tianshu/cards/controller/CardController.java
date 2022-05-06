@@ -23,9 +23,6 @@ public class CardController {
     @Autowired
     private CardService cardService;
 
-    @Autowired
-    private CardServiceConfig cardConfig;
-
     @PostMapping("cards/customer")
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation("Customer's cards details")
@@ -33,14 +30,10 @@ public class CardController {
         return cardService.getCardsByCustomerId(dto.getId());
     }
 
-    @GetMapping("properties")
+    @GetMapping("cards/properties")
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation("Cards's properties")
     public String getPropertyDetails() throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        Properties properties = new Properties(cardConfig.getMsg(),cardConfig.getBuildVersion()
-                ,cardConfig.getMailDetails(),cardConfig.getActiveBranches());
-
-        return objectMapper.writeValueAsString(properties);
+        return cardService.getPropertyDetails();
     }
 }
