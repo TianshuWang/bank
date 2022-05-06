@@ -1,6 +1,15 @@
 version: "3.8"
 
 services:
+
+  zipkin:
+    image: openzipkin/zipkin:latest
+    mem_reservation: 700m
+    ports:
+      - "9411:9411"
+    networks:
+      - bank-network
+
   rabbitmq:
     image: rabbitmq:3-management
     mem_reservation: 700m
@@ -22,6 +31,11 @@ services:
       - "8060:8060"
     networks:
       - bank-network
+    depends_on:
+      - zipkin
+    environment:
+      SPRING_PROFILES_ACTIVE: default
+      SPRING_ZIPKIN_BASEURL: http://zipkin:9411/
 
   eurekaserver:
     image: eurekaserver:latest
@@ -35,12 +49,13 @@ services:
     deploy:
       restart_policy:
         condition: on-failure
-        delay: 5s
+        delay: 15s
         max_attempts: 3
         window: 120s
     environment:
       SPRING_PROFILES_ACTIVE: default
       SPRING_CONFIG_IMPORT: configserver:http://configserver:8060/
+      SPRING_ZIPKIN_BASEURL: http://zipkin:9411/
 
   accounts:
     image: accounts:latest
@@ -56,7 +71,7 @@ services:
     deploy:
       restart_policy:
         condition: on-failure
-        delay: 5s
+        delay: 30s
         max_attempts: 3
         window: 120s
     environment:
@@ -64,29 +79,31 @@ services:
       SPRING_CONFIG_IMPORT: configserver:http://configserver:8060/
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8010/eureka/
       SPRING_RABBITMQ_HOST: host.docker.internal
+      SPRING_ZIPKIN_BASEURL: http://zipkin:9411/
 
-  accounts1:
-    image: accounts:latest
-    mem_reservation: 700m
-    ports:
-      - "8071:8070"
-    networks:
-      - bank-network
-    depends_on:
-      - configserver
-      - eurekaserver
-      - rabbitmq
-    deploy:
-      restart_policy:
-        condition: on-failure
-        delay: 5s
-        max_attempts: 3
-        window: 120s
-    environment:
-      SPRING_PROFILES_ACTIVE: default
-      SPRING_CONFIG_IMPORT: configserver:http://configserver:8060/
-      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8010/eureka/
-      SPRING_RABBITMQ_HOST: host.docker.internal
+  #accounts1:
+    #image: accounts:latest
+    #mem_reservation: 700m
+    #ports:
+      #- "8071:8070"
+    #networks:
+      #- bank-network
+    #depends_on:
+      #- configserver
+      #- eurekaserver
+      #- rabbitmq
+    #deploy:
+      #restart_policy:
+        #condition: on-failure
+        #delay: 5s
+        #max_attempts: 3
+        #window: 120s
+    #environment:
+      #SPRING_PROFILES_ACTIVE: default
+      #SPRING_CONFIG_IMPORT: configserver:http://configserver:8060/
+      #EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8010/eureka/
+      #SPRING_RABBITMQ_HOST: host.docker.internal
+      #SPRING_ZIPKIN_BASEURL: http://zipkin:9411/
 
   loans:
     image: loans:latest
@@ -102,7 +119,7 @@ services:
     deploy:
       restart_policy:
         condition: on-failure
-        delay: 5s
+        delay: 30s
         max_attempts: 3
         window: 120s
     environment:
@@ -110,6 +127,7 @@ services:
       SPRING_CONFIG_IMPORT: configserver:http://configserver:8060/
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8010/eureka/
       SPRING_RABBITMQ_HOST: host.docker.internal
+      SPRING_ZIPKIN_BASEURL: http://zipkin:9411/
 
   cards:
     image: cards:latest
@@ -125,7 +143,7 @@ services:
     deploy:
       restart_policy:
         condition: on-failure
-        delay: 5s
+        delay: 30s
         max_attempts: 3
         window: 120s
     environment:
@@ -133,6 +151,7 @@ services:
       SPRING_CONFIG_IMPORT: configserver:http://configserver:8060/
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8010/eureka/
       SPRING_RABBITMQ_HOST: host.docker.internal
+      SPRING_ZIPKIN_BASEURL: http://zipkin:9411/
 
   gatewayserver:
     image: gatewayserver:latest
@@ -150,13 +169,14 @@ services:
     deploy:
       restart_policy:
         condition: on-failure
-        delay: 5s
+        delay: 45s
         max_attempts: 3
         window: 120s
     environment:
       SPRING_PROFILES_ACTIVE: default
       SPRING_CONFIG_IMPORT: configserver:http://configserver:8060/
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8010/eureka/
+      SPRING_ZIPKIN_BASEURL: http://zipkin:9411/
 
 networks:
   bank-network:
