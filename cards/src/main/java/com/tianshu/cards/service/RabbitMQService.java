@@ -16,8 +16,13 @@ public class RabbitMQService {
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
+    @RabbitListener(queues = "${spring.rabbitmq.queue}")
+    public void listenDirect(CustomerDto customerDto) {
+        logger.info("Cards service received direct message of customer's data: {}",customerDto.toString());
+    }
+
     @RabbitListener(queues = "${spring.rabbitmq.queue-cards}")
-    public void listen(CustomerDto customerDto) {
-        logger.info("Cards service received message of customer's data: {}",customerDto.toString());
+    public void listenFanout(CustomerDto customerDto) {
+        logger.info("Cards service received fanout message of customer's data: {}",customerDto.toString());
     }
 }
