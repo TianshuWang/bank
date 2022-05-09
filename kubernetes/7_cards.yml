@@ -1,24 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: eurekaserver-deployment
+  name: cards-deployment
   labels:
-    app: eurekaserver
+    app: cards
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: eurekaserver
+      app: cards
   template:
     metadata:
       labels:
-        app: eurekaserver
+        app: cards
     spec:
       containers:
-        - name: eurekaserver
-          image: wangtianshu17/eurekaserver:latest
+        - name: cards
+          image: wangtianshu17/cards:latest
           ports:
-          - containerPort: 8010
+          - containerPort: 9000
           env:
           - name: SPRING_ZIPKIN_BASEURL
             valueFrom:
@@ -35,6 +35,11 @@ spec:
               configMapKeyRef:
                 name: bank-configmap
                 key: SPRING_CONFIG_IMPORT
+          - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+            valueFrom:
+              configMapKeyRef:
+                name: bank-configmap
+                key: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
           - name: SPRING_RABBITMQ_HOST
             valueFrom:
               configMapKeyRef:
@@ -44,12 +49,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: eurekaserver-service
+  name: cards-service
 spec:
   selector:
-    app: eurekaserver
+    app: cards
   type: LoadBalancer
   ports:
     - protocol: TCP
-      port: 8010
-      targetPort: 8010
+      port: 9000
+      targetPort: 9000
