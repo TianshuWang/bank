@@ -11,6 +11,18 @@ services:
     networks:
       - bank-network
 
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    networks:
+      - bank-network
+    depends_on:
+      - prometheus
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=password
+
   zipkin:
     image: openzipkin/zipkin:latest
     mem_reservation: 700m
