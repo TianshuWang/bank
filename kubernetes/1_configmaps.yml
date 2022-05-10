@@ -4,7 +4,7 @@ metadata:
   name: bank-configmap
 data:
   SPRING_ZIPKIN_BASEURL: http://zipkin-service:9411/
-  SPRING_PROFILES_ACTIVE: default
+  SPRING_PROFILES_ACTIVE: prod
   SPRING_CONFIG_IMPORT: configserver:http://configserver-service:8060/
   EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver-service:8010/eureka/
   SPRING_RABBITMQ_HOST: rabbitmq-service

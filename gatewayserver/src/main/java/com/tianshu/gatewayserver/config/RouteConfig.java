@@ -13,18 +13,18 @@ public class RouteConfig {
     @Bean
     public RouteLocator routes(RouteLocatorBuilder builder){
         return builder.routes()
-                .route(p -> p.path("/bank/accounts-service/**")
-                        .filters(f -> f.rewritePath("/bank/accounts-service/(?<segment>.*)","/${segment}")
+                .route(p -> p.path("/bank/accounts/**")
+                        .filters(f -> f.rewritePath("/bank/accounts/(?<segment>.*)","/${segment}")
                                 .addResponseHeader("X-Response-Time",new Date().toString()))
-                        .uri("lb://ACCOUNTS-SERVICE"))
-                .route(p -> p.path("/bank/loans-service/**")
-                        .filters(f -> f.rewritePath("/bank/loans-service/(?<segment>.*)","/${segment}")
+                        .uri("lb://ACCOUNTS"))
+                .route(p -> p.path("/bank/loans/**")
+                        .filters(f -> f.rewritePath("/bank/loans/(?<segment>.*)","/${segment}")
                                 .addResponseHeader("X-Response-Time",new Date().toString()))
-                        .uri("lb://LOANS-SERVICE"))
-                .route(p -> p.path("/bank/cards-service/**")
-                        .filters(f -> f.rewritePath("/bank/cards-service/(?<segment>.*)","/${segment}")
+                        .uri("lb://LOANS"))
+                .route(p -> p.path("/bank/cards/**")
+                        .filters(f -> f.rewritePath("/bank/cards/(?<segment>.*)","/${segment}")
                                 .addResponseHeader("X-Response-Time",new Date().toString()))
-                        .uri("lb://CARDS-SERVICE"))
+                        .uri("lb://CARDS"))
                 .build();
     }
 }

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 
 import java.util.List;
 
-@FeignClient("loans-service")
+@FeignClient("loans")
 public interface LoansFeignClient {
 
     @PostMapping("loans/customer")
