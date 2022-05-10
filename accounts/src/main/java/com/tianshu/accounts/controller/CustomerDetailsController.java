@@ -35,10 +35,10 @@ public class CustomerDetailsController {
     @GetMapping("hello")
     @RateLimiter(name = "rateLimiterForHello", fallbackMethod = "helloFallBack")
     public String hello(){
-        return "hhhhhhhhhhhello";
+        return "hhhhhhhhhhhello k8s";
     }
 
     private String helloFallBack(Throwable t){
-        return "helloooooooooooooo";
+        return "helloooooooooooooo k8s";
     }
 }

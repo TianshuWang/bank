@@ -1,24 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: accounts-deployment
+  name: gatewayserver-deployment
   labels:
-    app: accounts
+    app: gatewayserver
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
-      app: accounts
+      app: gatewayserver
   template:
     metadata:
       labels:
-        app: accounts
+        app: gatewayserver
     spec:
       containers:
-        - name: accounts
-          image: wangtianshu17/accounts:latest
+        - name: gatewayserver
+          image: wangtianshu17/gatewayserver:latest
           ports:
-          - containerPort: 8070
+          - containerPort: 9010
           env:
           - name: SPRING_ZIPKIN_BASEURL
             valueFrom:
@@ -40,21 +40,16 @@ spec:
               configMapKeyRef:
                 name: bank-configmap
                 key: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
-          - name: SPRING_RABBITMQ_HOST
-            valueFrom:
-              configMapKeyRef:
-                name: bank-configmap
-                key: SPRING_RABBITMQ_HOST
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: accounts-service
+  name: gatewayserver-service
 spec:
   selector:
-    app: accounts
+    app: gatewayserver
   type: LoadBalancer
   ports:
     - protocol: TCP
-      port: 8070
-      targetPort: 8070
+      port: 9010
+      targetPort: 9010
