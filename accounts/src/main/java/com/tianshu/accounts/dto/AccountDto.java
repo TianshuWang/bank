@@ -16,6 +16,5 @@ public class AccountDto {
     private Long customerId;
     private String type;
     private String branchAddress;
-    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date createDate;
 }

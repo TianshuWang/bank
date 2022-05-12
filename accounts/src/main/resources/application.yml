@@ -39,6 +39,16 @@ spring:
             type: web
         rabbitmq:
             queue: zipkin.queue
+    kafka:
+        template:
+            default-topic: customer-events
+        producer:
+            bootstrap-servers: localhost:9092
+            key-serializer: org.apache.kafka.common.serialization.IntegerSerializer
+            value-serializer: org.apache.kafka.common.serialization.StringSerializer
+        admin:
+            properties:
+                bootstrap.servers: localhost:9092
 server:
     port: 8070
 

@@ -1,6 +1,6 @@
 package com.tianshu.cards.service;
 
-import com.tianshu.cards.dto.CustomerDto;
+import com.tianshu.cards.message.CustomerData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -9,20 +9,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class RabbitMQService {
+public class RabbitMQConsumer {
 
-    private static final Logger logger = LoggerFactory.getLogger(RabbitMQService.class);
+    private static final Logger logger = LoggerFactory.getLogger(RabbitMQConsumer.class);
 
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
     @RabbitListener(queues = "${spring.rabbitmq.queue}")
-    public void listenDirect(CustomerDto customerDto) {
-        logger.info("Cards service received direct message of customer's data: {}",customerDto.toString());
+    public void listenDirect(CustomerData customerData) {
+        logger.info("Cards service received direct message of customer's data: {}",customerData.toString());
     }
 
     @RabbitListener(queues = "${spring.rabbitmq.queue-cards}")
-    public void listenFanout(CustomerDto customerDto) {
-        logger.info("Cards service received fanout message of customer's data: {}",customerDto.toString());
+    public void listenFanout(CustomerData customerData) {
+        logger.info("Cards service received fanout message of customer's data: {}",customerData.toString());
     }
 }

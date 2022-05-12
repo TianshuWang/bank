@@ -15,13 +15,8 @@ import java.util.Date;
 public class CustomerDto {
 
     private Long id;
-
     private String name;
-
     private String email;
-
     private String mobileNumber;
-
-    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date createDate;
 }

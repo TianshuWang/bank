@@ -27,6 +27,5 @@ public class CardDto {
 
     private Double availableAmount;
 
-    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date createDate;
 }

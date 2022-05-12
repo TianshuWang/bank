@@ -1,205 +1,26 @@
-version: "3.8"
-
+version: '3'
 services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.0.1
+    container_name: zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
 
-  prometheus:
-    image: prom/prometheus:latest
+  kafkabroker:
+    image: confluentinc/cp-kafka:7.0.1
+    container_name: kafkabroker
     ports:
-      - "9090:9090"
-    volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml
-    networks:
-      - bank-network
-
-  grafana:
-    image: grafana/grafana:latest
-    ports:
-      - "3000:3000"
-    networks:
-      - bank-network
+      # To learn about configuring Kafka for access across networks see
+      # https://www.confluent.io/blog/kafka-client-cannot-connect-to-broker-on-aws-on-docker-etc/
+      - "9092:9092"
     depends_on:
-      - prometheus
+      - zookeeper
     environment:
-      - GF_SECURITY_ADMIN_USER=admin
-      - GF_SECURITY_ADMIN_PASSWORD=password
-
-  zipkin:
-    image: openzipkin/zipkin:latest
-    mem_reservation: 700m
-    ports:
-      - "9411:9411"
-    networks:
-      - bank-network
-
-  rabbitmq:
-    image: rabbitmq:3-management
-    mem_reservation: 700m
-    restart: always
-    hostname: host.docker.internal
-    ports:
-      - "5672:5672"
-      - "15672:15672"
-    networks:
-      - bank-network
-    environment:
-      RABBITMQ_USER: root
-      RABBIT_PASSWORD: root
-
-  configserver:
-    image: configserver:latest
-    mem_reservation: 700m
-    ports:
-      - "8060:8060"
-    networks:
-      - bank-network
-    depends_on:
-      - zipkin
-    environment:
-      SPRING_PROFILES_ACTIVE: default
-      SPRING_ZIPKIN_BASEURL: http://zipkin:9411/
-
-  eurekaserver:
-    image: eurekaserver:latest
-    mem_reservation: 700m
-    ports:
-      - "8010:8010"
-    networks:
-      - bank-network
-    depends_on:
-      - configserver
-    deploy:
-      restart_policy:
-        condition: on-failure
-        delay: 15s
-        max_attempts: 3
-        window: 120s
-    environment:
-      SPRING_PROFILES_ACTIVE: default
-      SPRING_CONFIG_IMPORT: configserver:http://configserver:8060/
-      SPRING_ZIPKIN_BASEURL: http://zipkin:9411/
-
-  accounts:
-    image: accounts:latest
-    mem_reservation: 700m
-    ports:
-      - "8070:8070"
-    networks:
-      - bank-network
-    depends_on:
-      - configserver
-      - eurekaserver
-      - rabbitmq
-    deploy:
-      restart_policy:
-        condition: on-failure
-        delay: 30s
-        max_attempts: 3
-        window: 120s
-    environment:
-      SPRING_PROFILES_ACTIVE: default
-      SPRING_CONFIG_IMPORT: configserver:http://configserver:8060/
-      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8010/eureka/
-      SPRING_RABBITMQ_HOST: host.docker.internal
-      SPRING_ZIPKIN_BASEURL: http://zipkin:9411/
-
-  #accounts1:
-    #image: accounts:latest
-    #mem_reservation: 700m
-    #ports:
-      #- "8071:8070"
-    #networks:
-      #- bank-network
-    #depends_on:
-      #- configserver
-      #- eurekaserver
-      #- rabbitmq
-    #deploy:
-      #restart_policy:
-        #condition: on-failure
-        #delay: 5s
-        #max_attempts: 3
-        #window: 120s
-    #environment:
-      #SPRING_PROFILES_ACTIVE: default
-      #SPRING_CONFIG_IMPORT: configserver:http://configserver:8060/
-      #EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8010/eureka/
-      #SPRING_RABBITMQ_HOST: host.docker.internal
-      #SPRING_ZIPKIN_BASEURL: http://zipkin:9411/
-
-  loans:
-    image: loans:latest
-    mem_reservation: 700m
-    ports:
-      - "8090:8090"
-    networks:
-      - bank-network
-    depends_on:
-      - configserver
-      - eurekaserver
-      - rabbitmq
-    deploy:
-      restart_policy:
-        condition: on-failure
-        delay: 30s
-        max_attempts: 3
-        window: 120s
-    environment:
-      SPRING_PROFILES_ACTIVE: default
-      SPRING_CONFIG_IMPORT: configserver:http://configserver:8060/
-      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8010/eureka/
-      SPRING_RABBITMQ_HOST: host.docker.internal
-      SPRING_ZIPKIN_BASEURL: http://zipkin:9411/
-
-  cards:
-    image: cards:latest
-    mem_reservation: 700m
-    ports:
-      - "9000:9000"
-    networks:
-      - bank-network
-    depends_on:
-      - configserver
-      - eurekaserver
-      - rabbitmq
-    deploy:
-      restart_policy:
-        condition: on-failure
-        delay: 30s
-        max_attempts: 3
-        window: 120s
-    environment:
-      SPRING_PROFILES_ACTIVE: default
-      SPRING_CONFIG_IMPORT: configserver:http://configserver:8060/
-      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8010/eureka/
-      SPRING_RABBITMQ_HOST: host.docker.internal
-      SPRING_ZIPKIN_BASEURL: http://zipkin:9411/
-
-  gatewayserver:
-    image: gatewayserver:latest
-    mem_reservation: 700m
-    ports:
-      - "9010:9010"
-    networks:
-      - bank-network
-    depends_on:
-      - configserver
-      - eurekaserver
-      - cards
-      - loans
-      - accounts
-    deploy:
-      restart_policy:
-        condition: on-failure
-        delay: 45s
-        max_attempts: 3
-        window: 120s
-    environment:
-      SPRING_PROFILES_ACTIVE: default
-      SPRING_CONFIG_IMPORT: configserver:http://configserver:8060/
-      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8010/eureka/
-      SPRING_ZIPKIN_BASEURL: http://zipkin:9411/
-
-networks:
-  bank-network:
-    name: bank-network
-
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,PLAINTEXT_INTERNAL://broker:29092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1

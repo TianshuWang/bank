@@ -20,6 +20,5 @@ public class CardDto {
     private Double totalLimit;
     private Double amountUsed;
     private Double availableAmount;
-    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date createDate;
 }

@@ -10,6 +10,8 @@ import com.tianshu.accounts.entity.Properties;
 import com.tianshu.accounts.exception.AccountNotFoundByCustomerIdException;
 import com.tianshu.accounts.util.EntityDtoUtil;
 import org.apache.commons.collections4.CollectionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

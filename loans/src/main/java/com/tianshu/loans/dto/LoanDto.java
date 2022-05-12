@@ -20,6 +20,5 @@ public class LoanDto {
     private Double total;
     private Double amountPaid;
     private Double outstandingAmount;
-    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date createDate;
 }

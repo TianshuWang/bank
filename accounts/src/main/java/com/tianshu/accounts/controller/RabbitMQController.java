@@ -1,12 +1,13 @@
 package com.tianshu.accounts.controller;
 
 
-import com.tianshu.accounts.service.CustomerService;
-import com.tianshu.accounts.service.RabbitMQService;
+import com.tianshu.accounts.message.CustomerData;
+import com.tianshu.accounts.service.RabbitMQProducer;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -16,24 +17,18 @@ import org.springframework.web.bind.annotation.*;
 public class RabbitMQController {
 
     @Autowired
-    private RabbitMQService rabbitMQService;
+    private RabbitMQProducer rabbitMQProducer;
 
-    @Autowired
-    private CustomerService customerService;
 
     @GetMapping(value = "direct/customers/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    @ApiOperation("Produce Customer's details")
-    public String produceCustomerDirectById(@PathVariable Long id) {
-        rabbitMQService.sendDirect(customerService.getCustomerById(id));
-        return "Message sent to the RabbitMQ Successfully";
+    @ApiOperation("Produce Customer's data directly")
+    public ResponseEntity<CustomerData> produceCustomerDirectById(@PathVariable Long id) {
+        return ResponseEntity.status(HttpStatus.OK).body(rabbitMQProducer.sendDirect(id));
     }
 
     @GetMapping(value = "fanout/customers/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    @ApiOperation("Produce Customer's details")
-    public String produceCustomerFanoutById(@PathVariable Long id) {
-        rabbitMQService.sendFanout(customerService.getCustomerById(id));
-        return "Message sent to the RabbitMQ Successfully";
+    @ApiOperation("Produce Customer's data fanoutly")
+    public ResponseEntity<CustomerData> produceCustomerFanoutById(@PathVariable Long id) {
+        return ResponseEntity.status(HttpStatus.OK).body(rabbitMQProducer.sendFanout(id));
     }
 }

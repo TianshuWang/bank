@@ -1,11 +1,7 @@
 package com.tianshu.cards.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tianshu.cards.config.CardServiceConfig;
 import com.tianshu.cards.dto.CardDto;
-import com.tianshu.cards.dto.CustomerDto;
-import com.tianshu.cards.entity.Properties;
 import com.tianshu.cards.service.CardService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
