@@ -25,7 +25,7 @@ public class AccountController {
     @Autowired
     private AccountService accountService;
 
-    @GetMapping("accounts/customer/{id}")
+    @GetMapping("/accounts/customer/{id}")
     @ResponseStatus(HttpStatus.FOUND)
     @ApiOperation("Customer's accounts details")
     @Timed(value = "getCustomerAccountsDetails.time", description = "Time taken to return Customer's Accounts details")
@@ -33,14 +33,14 @@ public class AccountController {
         return accountService.getAccountsDetailsByCustomerId(id);
     }
 
-    @GetMapping("accounts/{id}")
+    @GetMapping("/accounts/{id}")
     @ResponseStatus(HttpStatus.FOUND)
     @ApiOperation("Account's details")
     public AccountDto getAccountsDetailsById(@ApiParam("Account Id") @PathVariable Long id){
         return accountService.getAccountDetailsById(id);
     }
 
-    @GetMapping("accounts/properties")
+    @GetMapping("/accounts/properties")
     @ResponseStatus(HttpStatus.FOUND)
     @ApiOperation("Account's properties")
     public String getPropertyDetails() throws JsonProcessingException {

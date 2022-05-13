@@ -20,13 +20,13 @@ public class RabbitMQController {
     private RabbitMQProducer rabbitMQProducer;
 
 
-    @GetMapping(value = "direct/customers/{id}")
+    @GetMapping(value = "/direct/customers/{id}")
     @ApiOperation("Produce Customer's data directly")
     public ResponseEntity<CustomerData> produceCustomerDirectById(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(rabbitMQProducer.sendDirect(id));
     }
 
-    @GetMapping(value = "fanout/customers/{id}")
+    @GetMapping(value = "/fanout/customers/{id}")
     @ApiOperation("Produce Customer's data fanoutly")
     public ResponseEntity<CustomerData> produceCustomerFanoutById(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(rabbitMQProducer.sendFanout(id));

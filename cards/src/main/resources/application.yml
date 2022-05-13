@@ -39,6 +39,13 @@ spring:
       type: web
     rabbitmq:
       queue: zipkin.queue
+  kafka:
+    topic: customer-events
+    consumer:
+      bootstrap-servers: localhost:9092
+      key-deserializer: org.apache.kafka.common.serialization.IntegerDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      group-id: customer-events-listener-group
 server:
   port: 9000
 

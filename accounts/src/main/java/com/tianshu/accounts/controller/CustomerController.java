@@ -23,21 +23,21 @@ public class CustomerController {
     @Autowired
     private KafkaMQProducer kafkaMQProducer;
 
-    @GetMapping("all")
+    @GetMapping("/all")
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation("Customers's details")
     public List<CustomerDto> getAllCustomers(){
         return customerService.getAllCustomers();
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.FOUND)
     @ApiOperation("Customer's details")
     public CustomerDto getCustomerById(@ApiParam("Customer Id") @PathVariable Long id){
         return customerService.getCustomerById(id);
     }
 
-    @PostMapping("customer")
+    @PostMapping("/customer")
     @ResponseStatus(HttpStatus.CREATED)
     @ApiOperation("Create Customer")
     public CustomerDto createCustomer(@RequestBody CustomerDto customerDto){

@@ -19,7 +19,7 @@ public class CustomerDetailsController {
     @Autowired
     private CustomerDetailsService customerDetailsService;
 
-    @PostMapping("customer-details")
+    @PostMapping("/customer-details")
     @ResponseStatus(HttpStatus.FOUND)
     @ApiOperation("Customer's details")
     @CircuitBreaker(name = "circuitbreakerForCustomerDetails", fallbackMethod = "getCustomerDetailsFallBack")
@@ -32,7 +32,7 @@ public class CustomerDetailsController {
         return customerDetailsService.getCustomerDetailsByCustomerFallBack(correlationId,customerDto);
     }
 
-    @GetMapping("hello")
+    @GetMapping("/hello")
     @RateLimiter(name = "rateLimiterForHello", fallbackMethod = "helloFallBack")
     public String hello(){
         return "hhhhhhhhhhhello k8s";
