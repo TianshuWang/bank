@@ -1,9 +1,8 @@
-package com.tianshu.loans.message;
+package com.tianshu.loans.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.annotation.JsonRootName;
 import lombok.*;
 
 import java.util.Date;
@@ -11,15 +10,13 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @ToString
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({
-        "CustomerData"
-})
-public class CustomerData {
+@Builder
+@JsonRootName("Customer")
+@JsonPropertyOrder({"id","name","email","mobileNumber","createDate"})
+public class CustomerDto {
 
-    @JsonProperty("id")
+    @JsonProperty("customer_id")
     private Long id;
 
     @JsonProperty("name")
@@ -28,10 +25,9 @@ public class CustomerData {
     @JsonProperty("email")
     private String email;
 
-    @JsonProperty("mobileNumber")
+    @JsonProperty("mobile_number")
     private String mobileNumber;
 
-    @JsonProperty("createDate")
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonProperty("create_date")
     private Date createDate;
 }

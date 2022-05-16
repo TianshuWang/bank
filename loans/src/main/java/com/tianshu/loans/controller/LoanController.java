@@ -1,6 +1,7 @@
 package com.tianshu.loans.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.tianshu.loans.dto.CustomerDto;
 import com.tianshu.loans.dto.LoanDto;
 import com.tianshu.loans.service.LoanService;
 import io.swagger.annotations.Api;

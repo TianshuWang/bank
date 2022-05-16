@@ -1,6 +1,6 @@
 package com.tianshu.accounts;
 
-import com.tianshu.accounts.message.CustomerData;
+import com.tianshu.accounts.dto.CustomerDto;
 import com.tianshu.accounts.message.CustomerEvent;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ public class CustomerEventsIntegrationTest {
     @Test
     public void postCustomerEvent(){
         //given
-        CustomerData customerData = CustomerData.builder()
+        CustomerDto customerData = CustomerDto.builder()
                 .id(2L)
                 .name("MARIA FLORES")
                 .email("MARIAFLORES@GMAIL.COM")

@@ -8,14 +8,13 @@ import com.tianshu.cards.dto.CardDto;
 import com.tianshu.cards.entity.Card;
 import com.tianshu.cards.entity.Properties;
 import com.tianshu.cards.exception.CardNotFoundByCustomerIdException;
-import com.tianshu.cards.util.EntityDtoUtil;
+import com.tianshu.cards.mapper.CardMapper;
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -29,8 +28,10 @@ public class CardService {
     @Autowired
     private CardServiceConfig cardConfig;
 
+    @Autowired
+    private CardMapper cardMapper;
+
     public List<CardDto> getCardsByCustomerId(Long id){
-        logger.info("Get Customer's Cards Method Started");
 
         List<Card> cards = cardRepository.findByCustomerId(id);
 
@@ -38,11 +39,7 @@ public class CardService {
             throw new CardNotFoundByCustomerIdException(id);
         }
 
-        List<CardDto> cardDtos = new ArrayList<>();
-        cards.forEach(c -> cardDtos.add(EntityDtoUtil.entityToDto(c, CardDto.class)));
-
-        logger.info("Get Customer's Cards Method Ended");
-        return cardDtos;
+        return cardMapper.entityListToDtoList(cards);
     }
 
     public String getPropertyDetails() throws JsonProcessingException {

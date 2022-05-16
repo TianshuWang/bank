@@ -1,10 +1,9 @@
 package com.tianshu.accounts.service;
 
-import com.tianshu.accounts.message.CustomerData;
+import com.tianshu.accounts.dto.CustomerDto;
+import com.tianshu.accounts.mapper.CustomerMapper;
 import com.tianshu.accounts.util.EntityDtoUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.connection.CorrelationData;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,21 +32,21 @@ public class RabbitMQProducer {
     @Autowired
     private CustomerService customerService;
 
-    public CustomerData sendDirect(long customerId) {
-        CustomerData customerData = EntityDtoUtil.dtoToEntity(customerService.getCustomerById(customerId), CustomerData.class);
-        log.info("Accounts service sent direct message of customer's data: {}",customerData);
-        this.rabbitTemplate.convertAndSend(exchangeDirect, routingKey, customerData);
+    public CustomerDto sendDirect(long customerId) {
+        CustomerDto customerDto = customerService.getCustomerById(customerId);
+        log.info("Accounts service sent direct message of customer's data: {}",customerDto);
+        this.rabbitTemplate.convertAndSend(exchangeDirect, routingKey, customerDto);
 
-        return customerData;
+        return customerDto;
     }
 
-    public CustomerData sendFanout(long customerId) {
-        CustomerData customerData = EntityDtoUtil.dtoToEntity(customerService.getCustomerById(customerId), CustomerData.class);
+    public CustomerDto sendFanout(long customerId) {
+        CustomerDto customerDto = customerService.getCustomerById(customerId);
         CorrelationData correlationData = new CorrelationData(UUID.randomUUID().toString());
-        log.info("Accounts service sent fanout message of customer's data: {}",customerData);
-        this.rabbitTemplate.convertAndSend(exchangeFanout,"",customerData,correlationData);
+        log.info("Accounts service sent fanout message of customer's data: {}",customerDto);
+        this.rabbitTemplate.convertAndSend(exchangeFanout,"",customerDto,correlationData);
 
-        return customerData;
+        return customerDto;
     }
 
 }

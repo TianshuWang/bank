@@ -1,7 +1,7 @@
 package com.tianshu.accounts.controller;
 
 
-import com.tianshu.accounts.message.CustomerData;
+import com.tianshu.accounts.dto.CustomerDto;
 import com.tianshu.accounts.service.RabbitMQProducer;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -22,13 +22,13 @@ public class RabbitMQController {
 
     @GetMapping(value = "/direct/customers/{id}")
     @ApiOperation("Produce Customer's data directly")
-    public ResponseEntity<CustomerData> produceCustomerDirectById(@PathVariable Long id) {
+    public ResponseEntity<CustomerDto> produceCustomerDirectById(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(rabbitMQProducer.sendDirect(id));
     }
 
     @GetMapping(value = "/fanout/customers/{id}")
     @ApiOperation("Produce Customer's data fanoutly")
-    public ResponseEntity<CustomerData> produceCustomerFanoutById(@PathVariable Long id) {
+    public ResponseEntity<CustomerDto> produceCustomerFanoutById(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(rabbitMQProducer.sendFanout(id));
     }
 }

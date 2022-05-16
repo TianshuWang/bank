@@ -1,4 +1,4 @@
-package com.tianshu.cards.service;
+package com.tianshu.loans.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -10,7 +10,10 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class KafkaMQConsumer {
 
-    @KafkaListener(topics = {"${spring.kafka.topic}"})
+    @Value("${spring.kafka.topic}")
+    private String topic;
+
+    @KafkaListener(topics = {"customer-events"})
     public void onMessage(ConsumerRecord<Integer,String> consumerRecord){
         log.info("ConsumerRecord: {}", consumerRecord);
     }

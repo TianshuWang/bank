@@ -4,6 +4,7 @@ import com.tianshu.accounts.dao.CustomerRepository;
 import com.tianshu.accounts.dto.CustomerDto;
 import com.tianshu.accounts.entity.Customer;
 import com.tianshu.accounts.exception.CustomerAlreadyExistedException;
+import com.tianshu.accounts.mapper.CustomerMapper;
 import com.tianshu.accounts.util.EntityDtoUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,20 +20,18 @@ public class CustomerService {
     @Autowired
     private CustomerRepository customerRepository;
 
+    @Autowired
+    private CustomerMapper customerMapper;
+
     public List<CustomerDto> getAllCustomers(){
-        List<Customer> customers = customerRepository.findAll();
-
-        List<CustomerDto> customerDtos = new ArrayList<>();
-        customers.forEach(c -> customerDtos.add(EntityDtoUtil.entityToDto(c, CustomerDto.class)));
-
-        return customerDtos;
+         return customerMapper.entityListToDtoList(customerRepository.findAll());
     }
 
     public CustomerDto getCustomerById(Long id){
         Customer customer = customerRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Customer not found by Id:" + id));
 
-        return EntityDtoUtil.entityToDto(customer, CustomerDto.class);
+        return customerMapper.entityToDto(customer);
     }
 
     public CustomerDto createCustomer(CustomerDto customerDto){
@@ -42,18 +41,18 @@ public class CustomerService {
             throw new CustomerAlreadyExistedException(customerDto.getEmail());
         }
 
-        final Customer saved = customerRepository.save(EntityDtoUtil.dtoToEntity(customerDto, Customer.class));
+        final Customer saved = customerRepository.save(customerMapper.dtoToEntity(customerDto));
 
-        return EntityDtoUtil.entityToDto(saved, CustomerDto.class);
+        return customerMapper.entityToDto(saved);
     }
 
     public CustomerDto updateCustomer(CustomerDto customerDto){
         Optional.ofNullable(customerRepository.findByEmail(customerDto.getEmail()))
                 .orElseThrow(() -> new EntityNotFoundException("Customer not found by Id:" + customerDto.getEmail()));
 
-        final Customer saved = customerRepository.save(EntityDtoUtil.dtoToEntity(customerDto, Customer.class));
+        final Customer saved = customerRepository.save(customerMapper.dtoToEntity(customerDto));
 
-        return EntityDtoUtil.entityToDto(saved, CustomerDto.class);
+        return customerMapper.entityToDto(saved);
     }
 
 }

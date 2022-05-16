@@ -4,19 +4,13 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tianshu.accounts.dao.CustomerRepository;
 import com.tianshu.accounts.dto.CustomerDto;
-import com.tianshu.accounts.entity.Customer;
-import com.tianshu.accounts.exception.CustomerAlreadyExistedException;
-import com.tianshu.accounts.message.CustomerData;
+import com.tianshu.accounts.mapper.CustomerMapper;
 import com.tianshu.accounts.message.CustomerEvent;
 import com.tianshu.accounts.util.EntityDtoUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.header.Header;
 import org.apache.kafka.common.header.internals.RecordHeader;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.amqp.rabbit.connection.CorrelationData;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -25,9 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.ListenableFutureCallback;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.List;
-import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -118,9 +110,10 @@ public class KafkaMQProducer {
 
     private void buildCustomerEvent(CustomerEvent customerEvent){
         CustomerDto customerDto = "NEW".equalsIgnoreCase(customerEvent.getCustomerEventType().toString()) ?
-                customerService.createCustomer(EntityDtoUtil.entityToDto(customerEvent.getCustomerData(),CustomerDto.class)) :
-                customerService.updateCustomer(EntityDtoUtil.entityToDto(customerEvent.getCustomerData(),CustomerDto.class));
-        customerEvent.setCustomerData(EntityDtoUtil.dtoToEntity(customerDto, CustomerData.class));
+                customerService.createCustomer(customerEvent.getCustomerData()) :
+                customerService.updateCustomer(customerEvent.getCustomerData());
+
+        customerEvent.setCustomerData(customerDto);
     }
 
     private ProducerRecord<Integer, String> buildProducerRecord(Integer key, String value, String topic) {

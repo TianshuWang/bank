@@ -8,6 +8,7 @@ import com.tianshu.accounts.dto.AccountDto;
 import com.tianshu.accounts.entity.Account;
 import com.tianshu.accounts.entity.Properties;
 import com.tianshu.accounts.exception.AccountNotFoundByCustomerIdException;
+import com.tianshu.accounts.mapper.AccountMapper;
 import com.tianshu.accounts.util.EntityDtoUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
@@ -28,6 +29,9 @@ public class AccountService {
     @Autowired
     private AccountServiceConfig accountConfig;
 
+    @Autowired
+    private AccountMapper accountMapper;
+
     public List<AccountDto> getAccountsDetailsByCustomerId(Long customerId){
         List<Account> accounts = accountRepository.findByCustomerId(customerId);
 
@@ -35,16 +39,14 @@ public class AccountService {
             throw new AccountNotFoundByCustomerIdException(customerId);
         }
 
-        List<AccountDto> accountsDto = new ArrayList<>();
-        accounts.forEach(a -> accountsDto.add(EntityDtoUtil.entityToDto(a, AccountDto.class)));
-
-        return accountsDto;
+        return accountMapper.entityListToDtoList(accounts);
     }
 
     public AccountDto getAccountDetailsById(Long id){
-        Account account = accountRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Account not found by Id:" + id));
+        Account account = accountRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Account not found by Id:" + id));
 
-        return EntityDtoUtil.entityToDto(account, AccountDto.class);
+        return accountMapper.entityToDto(account);
     }
 
     public String getPropertyDetails() throws JsonProcessingException {

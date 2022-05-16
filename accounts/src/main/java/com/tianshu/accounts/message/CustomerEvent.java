@@ -1,7 +1,9 @@
 package com.tianshu.accounts.message;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.tianshu.accounts.dto.CustomerDto;
 import lombok.*;
 
 @Data
@@ -9,13 +11,14 @@ import lombok.*;
 @AllArgsConstructor
 @ToString
 @Builder
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({
-        "CustomerEvent"
-})
 public class CustomerEvent {
 
+    @JsonProperty("customer_event_id")
     private Integer customerEventId;
+
+    @JsonProperty("customer_event_type")
     private CustomerEventType customerEventType;
-    private CustomerData customerData;
+
+    @JsonProperty("customer_data")
+    private CustomerDto customerData;
 }

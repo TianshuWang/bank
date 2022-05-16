@@ -1,5 +1,6 @@
 package com.tianshu.accounts.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,7 +14,12 @@ import java.util.List;
 @Builder
 public class CustomerDetailsDto {
 
+    @JsonProperty("accounts")
     private List<AccountDto> accounts;
+
+    @JsonProperty("loans")
     private List<LoanDto> loans;
+
+    @JsonProperty("cards")
     private List<CardDto> cards;
 }

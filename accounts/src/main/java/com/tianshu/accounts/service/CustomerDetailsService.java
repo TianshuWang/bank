@@ -25,13 +25,10 @@ public class CustomerDetailsService {
     private CardsFeignClient cardsFeignClient;
 
     public CustomerDetailsDto getCustomerDetailsByCustomer(String correlationId, CustomerDto customerDto){
-        log.info("Get Customer's Details Method Started");
 
         List<AccountDto> accountDtos = accountService.getAccountsDetailsByCustomerId(customerDto.getId());
         List<LoanDto> loanDtos = loansFeignClient.getLoanDetails(correlationId,customerDto);
         List<CardDto> cardDtos = cardsFeignClient.getCardDetails(correlationId,customerDto);
-
-        log.info("Get Customer's Details Method Ended");
 
         return CustomerDetailsDto.builder()
                 .accounts(accountDtos)
@@ -41,6 +38,8 @@ public class CustomerDetailsService {
     }
 
     public CustomerDetailsDto getCustomerDetailsByCustomerFallBack(String correlationId, CustomerDto customerDto){
+        log.info("Entry Get Customer's Details Fallback Method");
+
         List<AccountDto> accountDtos = accountService.getAccountsDetailsByCustomerId(customerDto.getId());
         List<CardDto> cardDtos = cardsFeignClient.getCardDetails(correlationId,customerDto);
 
