@@ -1,9 +1,7 @@
-package com.tianshu.accounts.message;
+package com.tianshu.cards.dto;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.tianshu.accounts.dto.CustomerDto;
 import lombok.*;
 
 @Data
