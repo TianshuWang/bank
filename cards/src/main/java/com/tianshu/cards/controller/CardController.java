@@ -20,14 +20,14 @@ public class CardController {
     @Autowired
     private CardService cardService;
 
-    @PostMapping("cards/customer")
-    @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/cards/customer")
+    @ResponseStatus(HttpStatus.FOUND)
     @ApiOperation("Customer's cards details")
     public List<CardDto> getCardsByCustomerId(@ApiParam("Customer") @RequestHeader("bank-correlation-id") String correlationId, @RequestBody CustomerDto dto){
         return cardService.getCardsByCustomerId(dto.getId());
     }
 
-    @GetMapping("cards/properties")
+    @GetMapping("/cards/properties")
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation("Cards's properties")
     public String getPropertyDetails() throws JsonProcessingException {

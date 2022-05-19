@@ -20,14 +20,14 @@ public class LoanController {
     @Autowired
     private LoanService loanService;
 
-    @PostMapping("loans/customer")
+    @PostMapping("/loans/customer")
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation("Customer's loans details")
     public List<LoanDto> getLoansByCustomerId(@ApiParam("Customer") @RequestHeader("bank-correlation-id") String correlationId, @RequestBody CustomerDto dto){
         return loanService.getLoansByCustomerId(dto.getId());
     }
 
-    @GetMapping("loans/properties")
+    @GetMapping("/loans/properties")
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation("Loans properties")
     public String getPropertyDetails() throws JsonProcessingException {

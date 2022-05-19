@@ -2,7 +2,6 @@ package com.tianshu.cards;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tianshu.cards.dto.CustomerEvent;
 import com.tianshu.cards.service.KafkaMQConsumer;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.junit.jupiter.api.BeforeEach;

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tianshu.accounts.config.AccountServiceConfig;
 import com.tianshu.accounts.dto.AccountDto;
+import com.tianshu.accounts.dto.CustomerDto;
 import com.tianshu.accounts.entity.Properties;
 import com.tianshu.accounts.service.AccountService;
 import io.micrometer.core.annotation.Timed;
@@ -25,19 +26,12 @@ public class AccountController {
     @Autowired
     private AccountService accountService;
 
-    @GetMapping("/accounts/customer/{id}")
+    @PostMapping("/accounts/customer")
     @ResponseStatus(HttpStatus.FOUND)
     @ApiOperation("Customer's accounts details")
     @Timed(value = "getCustomerAccountsDetails.time", description = "Time taken to return Customer's Accounts details")
-    public List<AccountDto> getAccountsDetailsByCustomerId(@ApiParam("Customer Id") @PathVariable Long id){
-        return accountService.getAccountsDetailsByCustomerId(id);
-    }
-
-    @GetMapping("/accounts/{id}")
-    @ResponseStatus(HttpStatus.FOUND)
-    @ApiOperation("Account's details")
-    public AccountDto getAccountsDetailsById(@ApiParam("Account Id") @PathVariable Long id){
-        return accountService.getAccountDetailsById(id);
+    public List<AccountDto> getAccountsDetailsByCustomerId(@RequestBody CustomerDto customerDto){
+        return accountService.getAccountsDetailsByCustomerId(customerDto.getId());
     }
 
     @GetMapping("/accounts/properties")

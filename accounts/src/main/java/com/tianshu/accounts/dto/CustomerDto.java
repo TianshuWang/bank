@@ -1,16 +1,19 @@
 package com.tianshu.accounts.dto;
 
-import com.fasterxml.jackson.annotation.*;
-import lombok.*;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.annotation.JsonRootName;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
-import java.time.LocalDate;
 import java.util.Date;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@Builder
 @JsonRootName("Customer")
 @JsonPropertyOrder({"id","name","email","mobileNumber","createDate"})
 public class CustomerDto {

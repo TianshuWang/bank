@@ -1,6 +1,5 @@
 package com.tianshu.accounts.message;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.tianshu.accounts.dto.CustomerDto;
@@ -14,6 +13,9 @@ import lombok.*;
 @JsonPropertyOrder({"customerEventId","customerEventType","customerData"})
 public class CustomerEvent {
 
+    public enum CustomerEventType {
+        NEW, UPDATE
+    }
     @JsonProperty("customer_event_id")
     private Integer customerEventId;
 

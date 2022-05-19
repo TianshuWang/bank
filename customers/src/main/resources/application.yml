@@ -1,0 +1,104 @@
+spring:
+  application:
+    name: customers
+  profiles:
+    active: default
+  config:
+    import: optional:configserver:http://34.68.15.122:8060/
+  datasource:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1
+    driverClassName: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    database-plataform: org.hibernate.dialect.H2Dialect
+    defer-datasource-initialization: true
+  h2:
+    console:
+      enabled: true
+  rabbitmq:
+    host: localhost
+    password: root
+    port: 5672
+    username: root
+    exchange-direct: customer.exchange.direct
+    exchange-fanout: customer.exchange.fanout
+    queue-loans: customer.queue.loans
+    queue-cards: customer.queue.cards
+    queue: customer.queue
+    routingKey: customer.routingKey
+  main:
+    allow-bean-definition-overriding: true
+  sleuth:
+    sampler:
+      percentage: 1
+  zipkin:
+    baseUrl: http://35.239.172.220:9411/
+    sender:
+      #type: rabbit
+      type: web
+    rabbitmq:
+      queue: zipkin.queue
+  kafka:
+    template:
+      default-topic: customer-events
+    producer:
+      bootstrap-servers: localhost:9092
+      key-serializer: org.apache.kafka.common.serialization.IntegerSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+    admin:
+      properties:
+        bootstrap.servers: localhost:9092
+server:
+  port: 8050
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    shutdown:
+      enabled: true
+eureka:
+  instance:
+    preferIpAddress: true
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://34.134.82.29:8010/eureka/
+info:
+  app:
+    name: Customers Microservice
+    description: Bank Accounts Application
+    version: 1.0.0
+
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        registerHealthIndicator: true
+    instances:
+      circuitbreakerForCustomerDetails:
+        minimumNumberOfCalls: 5 #断路器计算失败率或慢调⽤率之前所需的最⼩调⽤数.例如，如果minimumNumberOfCalls为10，则必须⾄少记录10个调⽤，然后才能计算失败率
+        failureRateThreshold: 50 #以百分⽐配置失败率阈值。当失败率等于或⼤于阈值时，断路器状态并关闭变为开启，并进⾏服务降级
+        waitDurationInOpenState: 30000 #断路器从开启过渡到半开应等待的时间
+        permittedNumberOfCallsInHalfOpenState: 2 #断路器在半开状态下允许通过的调⽤次数
+  retry:
+    configs:
+      default:
+        registerHealthIndicator: true
+    instances:
+      retryForCustomerDetails:
+        maxRetryAttempts: 3
+        waitDuration: 2000
+  ratelimiter:
+    configs:
+      default:
+        registerHealthIndicator: true
+    instances:
+      rateLimiterForHello:
+        timeoutDuration: 5 #线程等待权限的默认等待时间
+        limitRefreshPeriod: 5000 #限流器每隔0.5秒刷新一次
+        limitForPeriod: 1 #在一个刷新周期内，允许最大请求书
