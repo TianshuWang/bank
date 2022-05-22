@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AccountService {
@@ -52,5 +53,20 @@ public class AccountService {
 
         return objectMapper.writeValueAsString(properties);
     }
+
+    public AccountDto createAccount(AccountDto accountDto){
+        Account account = accountMapper.dtoToEntity(accountDto);
+
+        return accountMapper.entityToDto(accountRepository.save(account));
+    }
+    public AccountDto updateAccount(AccountDto accountDto){
+        Optional.ofNullable(accountRepository.findByIdAndCustomerId(accountDto.getId(),accountDto.getCustomerId()))
+                .orElseThrow(() -> new AccountException(String.format("Not found account:%s of the customer:%s",accountDto.getId(),accountDto.getCustomerId())));
+
+        Account account = accountMapper.dtoToEntity(accountDto);
+
+        return accountMapper.entityToDto(accountRepository.save(account));
+    }
+
 
 }

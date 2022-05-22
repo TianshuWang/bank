@@ -40,12 +40,12 @@ spring:
         rabbitmq:
             queue: zipkin.queue
     kafka:
-        topic: customer-events
+        topic: loan-events
         consumer:
             bootstrap-servers: localhost:9092
             key-deserializer: org.apache.kafka.common.serialization.IntegerDeserializer
             value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-            group-id: customer-events-listener-group
+            group-id: loan-events-listener-group
 server:
     port: 8090
 

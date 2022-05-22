@@ -10,10 +10,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class KafkaMQConsumer {
 
-    @Value("${spring.kafka.topic}")
-    private String topic;
-
-    @KafkaListener(topics = {"customer-events"})
+    @KafkaListener(topics = {"${spring.kafka.topic}"})
     public void onMessage(ConsumerRecord<Integer,String> consumerRecord){
         log.info("ConsumerRecord: {}", consumerRecord);
     }

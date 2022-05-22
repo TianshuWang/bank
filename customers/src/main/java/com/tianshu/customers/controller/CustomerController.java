@@ -2,7 +2,7 @@ package com.tianshu.customers.controller;
 
 import com.tianshu.customers.dto.CustomerDto;
 import com.tianshu.customers.service.CustomerService;
-import com.tianshu.customers.service.KafkaMQProducer;
+import com.tianshu.customers.message.KafkaMQProducer;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -20,27 +20,26 @@ public class CustomerController {
     private CustomerService customerService;
 
     @Autowired
-    private KafkaMQProducer kafkaMQProducer;
+    private KafkaMQProducer kafkaProducer;
 
     @GetMapping("/customers")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.FOUND)
     @ApiOperation("All Customers Data")
     public List<CustomerDto> getAllCustomers(){
         return customerService.getAllCustomers();
     }
 
-    @GetMapping("/customer/{id}")
+    @GetMapping("/customers/{id}")
     @ResponseStatus(HttpStatus.FOUND)
     @ApiOperation("Customer's details")
     public CustomerDto getCustomerById(@ApiParam("Customer Id") @PathVariable Long id){
         return customerService.getCustomerById(id);
     }
 
-    @PostMapping("/customer")
+    @PostMapping("/customers")
     @ResponseStatus(HttpStatus.CREATED)
     @ApiOperation("Create Customer")
     public CustomerDto createCustomer(@RequestBody CustomerDto customerDto){
         return customerService.createCustomer(customerDto);
     }
-
 }

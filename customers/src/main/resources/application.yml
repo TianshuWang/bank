@@ -40,8 +40,9 @@ spring:
     rabbitmq:
       queue: zipkin.queue
   kafka:
-    template:
-      default-topic: customer-events
+    topicAccounts: account-events
+    topicCards: card-events
+    topicLoans: loan-events
     producer:
       bootstrap-servers: localhost:9092
       key-serializer: org.apache.kafka.common.serialization.IntegerSerializer
@@ -102,3 +103,6 @@ resilience4j:
         timeoutDuration: 5 #线程等待权限的默认等待时间
         limitRefreshPeriod: 5000 #限流器每隔0.5秒刷新一次
         limitForPeriod: 1 #在一个刷新周期内，允许最大请求书
+task:
+  massiveFiles:
+    enabled: true

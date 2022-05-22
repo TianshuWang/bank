@@ -1,7 +1,6 @@
 package com.tianshu.customers.service;
 
-import com.tianshu.accounts.dto.CustomerDto;
-import com.tianshu.accounts.mapper.CustomerMapper;
+import com.tianshu.customers.dto.CustomerDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.connection.CorrelationData;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;

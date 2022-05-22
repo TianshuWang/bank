@@ -1,17 +1,14 @@
 package com.tianshu.customers.entity;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity(name = "MASSIVE_FILES")
-@Getter
-@Setter
-@ToString
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class MassiveFile {
 
@@ -21,6 +18,10 @@ public class MassiveFile {
 
     public enum ProcessStatus{
         PENDING, FINISHED, ERROR, FINISHED_WITH_ERROR
+    }
+
+    public enum ContentType{
+        XLSX,BASE64
     }
 
     @Id
@@ -34,6 +35,10 @@ public class MassiveFile {
     @Column(name = "FILE_TYPE", nullable = false)
     @Enumerated(EnumType.STRING)
     private FileType fileType;
+
+    @Column(name = "CONTENT_TYPE", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private ContentType contentType;
 
     @Column(name = "XLSX_FILE", nullable = false)
     @Lob

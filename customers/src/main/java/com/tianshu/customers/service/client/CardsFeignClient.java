@@ -12,6 +12,6 @@ import java.util.List;
 @FeignClient("cards")
 public interface CardsFeignClient {
 
-    @PostMapping("cards/customer")
+    @PostMapping("/cards/customer")
     List<CardDto> getCardDetails(@RequestHeader("bank-correlation-id") String correlationId, @RequestBody CustomerDto customerDto);
 }

@@ -21,7 +21,7 @@ public class CardController {
     private CardService cardService;
 
     @PostMapping("/cards/customer")
-    @ResponseStatus(HttpStatus.FOUND)
+    @ResponseStatus(HttpStatus.OK)
     @ApiOperation("Customer's cards details")
     public List<CardDto> getCardsByCustomerId(@ApiParam("Customer") @RequestHeader("bank-correlation-id") String correlationId, @RequestBody CustomerDto dto){
         return cardService.getCardsByCustomerId(dto.getId());

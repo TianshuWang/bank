@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("rabbitmq")
-@Api(tags = "Accounts RabbitMQ Controller")
+@Api(tags = "Customers RabbitMQ Controller")
 public class RabbitMQController {
 
     @Autowired

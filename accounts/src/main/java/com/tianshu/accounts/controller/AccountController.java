@@ -27,15 +27,15 @@ public class AccountController {
     private AccountService accountService;
 
     @PostMapping("/accounts/customer")
-    @ResponseStatus(HttpStatus.FOUND)
+    @ResponseStatus(HttpStatus.OK)
     @ApiOperation("Customer's accounts details")
     @Timed(value = "getCustomerAccountsDetails.time", description = "Time taken to return Customer's Accounts details")
-    public List<AccountDto> getAccountsDetailsByCustomerId(@RequestBody CustomerDto customerDto){
+    public List<AccountDto> getAccountsByCustomerId(@RequestBody CustomerDto customerDto){
         return accountService.getAccountsDetailsByCustomerId(customerDto.getId());
     }
 
     @GetMapping("/accounts/properties")
-    @ResponseStatus(HttpStatus.FOUND)
+    @ResponseStatus(HttpStatus.OK)
     @ApiOperation("Account's properties")
     public String getPropertyDetails() throws JsonProcessingException {
         return accountService.getPropertyDetails();

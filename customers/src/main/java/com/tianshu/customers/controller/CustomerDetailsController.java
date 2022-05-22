@@ -20,7 +20,7 @@ public class CustomerDetailsController {
     private CustomerDetailsService customerDetailsService;
 
     @PostMapping("/customer-details")
-    @ResponseStatus(HttpStatus.FOUND)
+    @ResponseStatus(HttpStatus.OK)
     @ApiOperation("Customer's details")
     @CircuitBreaker(name = "circuitbreakerForCustomerDetails", fallbackMethod = "getCustomerDetailsFallBack")
     @Retry(name = "retryForCustomerDetails", fallbackMethod = "getCustomerDetailsFallBack")

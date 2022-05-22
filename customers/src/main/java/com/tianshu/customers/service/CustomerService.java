@@ -44,7 +44,7 @@ public class CustomerService {
 
         customerDto.setCreateDate(new Date());
         final Customer saved = customerRepository.save(customerMapper.dtoToEntity(customerDto));
-        log.info("The customer is saved with Id:{}", saved.getId());
+        log.info("The customer:{} is saved with Id:{}",saved.getEmail(), saved.getId());
 
         return customerMapper.entityToDto(saved);
     }

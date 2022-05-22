@@ -41,12 +41,12 @@ public class CustomerDetailsService {
     public CustomerDetailsDto getCustomerDetailsByCustomerFallBack(String correlationId, CustomerDto customerDto){
         log.info("Entry Get Customer's Details Fallback Method");
 
-        List<AccountDto> accountDtos = accountsFeignClient.getAccountDetails(correlationId,customerDto);
+        List<LoanDto> loanDtos = loansFeignClient.getLoanDetails(correlationId,customerDto);
         List<CardDto> cardDtos = cardsFeignClient.getCardDetails(correlationId,customerDto);
 
         return CustomerDetailsDto.builder()
-                .accounts(accountDtos)
                 .cards(cardDtos)
+                .loans(loanDtos)
                 .build();
     }
 }

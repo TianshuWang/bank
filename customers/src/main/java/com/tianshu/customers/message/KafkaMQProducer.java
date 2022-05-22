@@ -1,4 +1,4 @@
-package com.tianshu.customers.kafka;
+package com.tianshu.customers.message;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -27,25 +27,13 @@ import java.util.stream.Stream;
 
 @Service
 @Slf4j
-public abstract class KafkaProducer {
+public class KafkaMQProducer {
 
     @Autowired
-    protected KafkaTemplate<Integer,String> kafkaTemplate;
+    private KafkaTemplate<Integer,String> kafkaTemplate;
 
     @Autowired
-    protected ObjectMapper objectMapper;
-
-
-
-    @Value("${spring.kafka.topicCards}")
-    private String topicCards;
-
-    @Value("${spring.kafka.topicLoans}")
-    private String topicLoans;
-
-    public abstract void sendProducerRecord(Event event) throws JsonProcessingException;
-
-    protected abstract void buildEvent();
+    private ObjectMapper objectMapper;
 
     public void sendProducerRecord(Event event, String topic) throws JsonProcessingException {
         Integer key = event.getEventId();
@@ -65,13 +53,13 @@ public abstract class KafkaProducer {
         });
     }
 
-    protected ProducerRecord<Integer, String> buildProducerRecord(Integer key, String value, String topic) {
+    private ProducerRecord<Integer, String> buildProducerRecord(Integer key, String value, String topic) {
         List<Header> recordHeaders = Stream.of(new RecordHeader("event-source", "scanner".getBytes())).collect(Collectors.toList());
 
         return new ProducerRecord<>(topic,null,key,value,recordHeaders);
     }
 
-    protected void handleFailure(Integer key, String value, Throwable ex) {
+    private void handleFailure(Integer key, String value, Throwable ex) {
         log.error("Error Sending the Message and the exception: {} ",ex.getMessage());
         try{
             throw ex;
@@ -81,9 +69,8 @@ public abstract class KafkaProducer {
         }
     }
 
-    protected void handleSuccess(Integer key, String value, SendResult<Integer, String> result) {
+    private void handleSuccess(Integer key, String value, SendResult<Integer, String> result) {
         log.info("Message Sent Successfully for the key: {} and value: {}, partition: {}", key, value, result.getRecordMetadata().partition());
     }
-
 
 }

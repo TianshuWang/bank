@@ -12,6 +12,6 @@ import java.util.List;
 @FeignClient("loans")
 public interface LoansFeignClient {
 
-    @PostMapping("loans/customer")
+    @PostMapping("/loans/customer")
     List<LoanDto> getLoanDetails(@RequestHeader("bank-correlation-id") String correlationId, @RequestBody CustomerDto customerDto);
 }
